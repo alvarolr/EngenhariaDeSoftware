@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Login e Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        ul {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container">
+        <!-- Login Form -->
+        <div id="loginForm">
+            <h1>Login</h1>
+            <input type="text" id="username" placeholder="Usuário">
+            <input type="password" id="password" placeholder="Senha">
+            <button onclick="login()">Entrar</button>
+            <p id="loginError" style="color: red;"></p>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" style="display: none;">
+            <h1>Dashboard</h1>
+            <h3>Tarefas:</h3>
+            <ul id="taskList"></ul>
+            <input type="text" id="newTask" placeholder="Nova tarefa">
+            <button onclick="addTask()">Adicionar Tarefa</button>
+            <button onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <script>
+        // Usuário fixo para simular login
+        const users = { admin: "1234" }; // Senha fraca
+        let tasks = []; // Lista de tarefas
+
+        // Função de login
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const loginError = document.getElementById("loginError");
+
+            // Validação fraca
+            if (users[username] === password) {
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("dashboard").style.display = "block";
+            } else {
+                loginError.textContent = "Login inválido.";
+            }
+        }
+
+        // Função para adicionar tarefa (sem validação de campo vazio)
+        function addTask() {
+            const newTask = document.getElementById("newTask").value;
+
+            // Permite adicionar tarefas vazias
+            tasks.push(newTask);
+            document.getElementById("newTask").value = "";
+            renderTasks();
+        }
+
+        // Renderiza as tarefas na lista
+        function renderTasks() {
+            const taskList = document.getElementById("taskList");
+            taskList.innerHTML = tasks
+                .map((task, index) => `<li>${index + 1}. ${task || ""}</li>`)
+                .join("");
+        }
+
+        // Função de logout
+        function logout() {
+            document.getElementById("loginForm").style.display = "block";
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("loginError").textContent = "";
+        }
+    </script>
+</body>
+</html>
